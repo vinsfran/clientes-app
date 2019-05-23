@@ -3,7 +3,8 @@
   <div class="card-body text-primary">
     <h5 class="card-title">Listado de clientes</h5>
     <div class="my-2 text-left">
-      <button class="btn btn-rounded btn-primary" type="button" [routerLink]="['/clientes/form']">
+      <button *ngIf="authService.hasRole('ROLE_ADMIN')" class="btn btn-rounded btn-primary" type="button"
+              [routerLink]="['/clientes/form']">
         Crear Cliente
       </button>
     </div>
@@ -14,13 +15,13 @@
            *ngIf="clientes?.length > 0">
       <thead>
       <tr>
-        <th>id</th>
+        <th *ngIf="authService.hasRole('ROLE_USER')">#</th>
         <th>nombre</th>
         <th>apellido</th>
         <th>email</th>
         <th>fecha</th>
-        <th>editar</th>
-        <th>eliminar</th>
+        <th *ngIf="authService.hasRole('ROLE_ADMIN')">editar</th>
+        <th *ngIf="authService.hasRole('ROLE_ADMIN')">eliminar</th>
       </tr>
       </thead>
       <tbody>
@@ -31,7 +32,8 @@
         <td>{{ cliente.email }}</td>
         <td>{{ cliente.createAt | date:"EEEE dd, MMMM yyyy" }}</td>
         <td>
-          <button type="button"
+          <button *ngIf="authService.hasRole('ROLE_ADMIN')"
+                  type="button"
                   name="editar"
                   [routerLink]="['/clientes/form', cliente.id]"
                   class="btn btn-primary btn-sm">
@@ -39,7 +41,8 @@
           </button>
         </td>
         <td>
-          <button type="button"
+          <button *ngIf="authService.hasRole('ROLE_ADMIN')"
+                  type="button"
                   name="eliminar"
                   (click)='delete(cliente)'
                   class="btn btn-danger btn-sm">

@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Usuario } from './usuario';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Usuario} from './usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,8 @@ export class AuthService {
   private _usuario: Usuario;
   private _token: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   public get usuario(): Usuario {
     if (this._usuario != null) {
@@ -43,16 +44,16 @@ export class AuthService {
       'Authorization': 'Basic ' + credenciales
     });
 
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
     params.set('grant_type', 'password');
     params.set('username', usuario.username);
     params.set('password', usuario.password);
     console.log(params.toString());
-    return this.http.post<any>(urlEndpoint, params.toString(), { headers: httpHeaders });
+    return this.http.post<any>(urlEndpoint, params.toString(), {headers: httpHeaders});
   }
 
   guardarUsuario(accessToken: string): void {
-    let payload = this.obtenerDatosToken(accessToken);
+    const payload = this.obtenerDatosToken(accessToken);
     this._usuario = new Usuario();
     this._usuario.nombre = payload.nombre;
     this._usuario.apellido = payload.apellido;
@@ -69,13 +70,13 @@ export class AuthService {
 
   obtenerDatosToken(accessToken: string): any {
     if (accessToken != null) {
-      return JSON.parse(atob(accessToken.split(".")[1]));
+      return JSON.parse(atob(accessToken.split('.')[1]));
     }
     return null;
   }
 
   isAuthenticated(): boolean {
-    let payload = this.obtenerDatosToken(this.token);
+    const payload = this.obtenerDatosToken(this.token);
     if (payload != null && payload.user_name && payload.user_name.length > 0) {
       return true;
     }
